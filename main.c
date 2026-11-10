@@ -27,7 +27,8 @@ int get_padding_size(int rows, int cols, int matrix[rows][cols]) {
   return padding;
 }
 
-void add(int layers, int rows, int cols, int result_matrix[rows][cols], int (*matrixs[layers])[cols]) {
+void add(int layers, int rows, int cols, int result_matrix[rows][cols],
+         int (*matrixs[layers])[cols]) {
 
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
@@ -44,7 +45,8 @@ void add(int layers, int rows, int cols, int result_matrix[rows][cols], int (*ma
   }
 }
 
-void subtract(int layers, int rows, int cols, int result_matrix[rows][cols], int (*matrixs[layers])[cols]) {
+void subtract(int layers, int rows, int cols, int result_matrix[rows][cols],
+              int (*matrixs[layers])[cols]) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       result_matrix[i][j] = matrixs[0][i][j];
@@ -60,7 +62,8 @@ void subtract(int layers, int rows, int cols, int result_matrix[rows][cols], int
   }
 }
 
-void multiply(int layers, int rows, int cols, int result_matrix[rows][cols], int (*matrixs[layers])[cols]) {
+void multiply(int layers, int rows, int cols, int result_matrix[rows][cols],
+              int (*matrixs[layers])[cols]) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       result_matrix[i][j] = matrixs[0][i][j];
@@ -76,7 +79,8 @@ void multiply(int layers, int rows, int cols, int result_matrix[rows][cols], int
   }
 }
 
-void divide(int layers, int rows, int cols, int result_matrix[rows][cols], int (*matrixs[layers])[cols]) {
+void divide(int layers, int rows, int cols, int result_matrix[rows][cols],
+            int (*matrixs[layers])[cols]) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       result_matrix[i][j] = matrixs[0][i][j];
@@ -87,7 +91,7 @@ void divide(int layers, int rows, int cols, int result_matrix[rows][cols], int (
     for (int j = 0; j < rows; j++) {
       for (int k = 0; k < cols; k++) {
         if (matrixs[i][j][k] == 0) {
-          perror("Tidak bisa membagi dengan 0 :");
+          fprintf(stderr, "Tidak bisa membagi dengan 0\n");
           exit(1);
         }
         result_matrix[j][k] /= matrixs[i][j][k];
@@ -102,7 +106,8 @@ void print_result(int layers, int rows, int cols, int (*matrixs[layers])[cols],
     for (int j = 0; j < layers; j++) {
       printf("[ ");
       for (int k = 0; k < cols; k++) {
-        printf("%*d ", get_padding_size(rows, cols, matrixs[j]), matrixs[j][i][k]);
+        printf("%*d ", get_padding_size(rows, cols, matrixs[j]),
+               matrixs[j][i][k]);
       }
       printf("] ");
 
@@ -138,6 +143,11 @@ int main() {
 
   printf("Masukkan jumlah matriks : ");
   scanf("%d", &count);
+
+  if (count <= 0) {
+    printf("jumlah matriks harus minimal 1");
+    return 1;
+  }
 
   printf("Masukkan panjang baris matriks : ");
   scanf("%d", &m);
